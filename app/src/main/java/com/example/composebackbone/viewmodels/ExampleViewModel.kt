@@ -17,19 +17,7 @@ class ExampleViewModel @Inject constructor(val repo: ExampleRepo): ViewModel() {
 
     val timesClicked = repo.timeClicked
     val apiString = repo.pokemonList
-    val colors: Map<String,Color> =
-        mapOf(
-            "black" to Color.Black,
-            "white" to Color.White,
-            "blue" to Color.Blue,
-            "red" to Color.Red,
-            "green" to Color.Green,
-            "yellow" to Color.Yellow,
-            "purple" to Color(75,0,130),
-            "brown" to Color(139,69,19),
-            "gray" to Color.Gray,
-            "pink" to Color(255,105,180),
-            )
+    val colors = repo.colors
 
 
     fun clicked(navController: NavController) {
