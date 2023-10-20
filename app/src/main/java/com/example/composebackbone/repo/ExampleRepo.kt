@@ -18,7 +18,7 @@ class ExampleRepo @Inject constructor() {
     val timeClicked = mutableIntStateOf(0)
     val pokemonList: MutableState<PokemonList?> = mutableStateOf(null)
 
-    val colors: Map<String, Color> =
+    val POKE_COLORS: Map<String, Color> =
         mapOf(
             "black" to Color.Black,
             "white" to Color.White,

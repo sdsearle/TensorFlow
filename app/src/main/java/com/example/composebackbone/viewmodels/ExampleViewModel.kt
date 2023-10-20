@@ -1,9 +1,9 @@
 package com.example.composebackbone.viewmodels
 
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.composebackbone.repo.ExampleRepo
+import com.example.composebackbone.interactor.AddInteractor
+import com.example.composebackbone.interactor.PokemonInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -13,11 +13,14 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class ExampleViewModel @Inject constructor(val repo: ExampleRepo): ViewModel() {
+class ExampleViewModel @Inject constructor(
+    val pokemonInteractor: PokemonInteractor,
+    val addInteractor: AddInteractor
+) : ViewModel() {
 
-    val timesClicked = repo.timeClicked
-    val apiString = repo.pokemonList
-    val colors = repo.colors
+    val timesClicked = addInteractor.timeClicked
+    val pokemonList = pokemonInteractor.pokemonList
+    val colors = pokemonInteractor.POKE_COLORS
 
 
     fun clicked(navController: NavController) {
@@ -25,11 +28,11 @@ class ExampleViewModel @Inject constructor(val repo: ExampleRepo): ViewModel() {
     }
 
     fun add() {
-        repo.addClicked()
+        addInteractor.addClicked()
     }
 
     suspend fun getPokemon(value: String) {
-        repo.getPokemons(value)
+        pokemonInteractor.getPokemons(value)
     }
 
 }

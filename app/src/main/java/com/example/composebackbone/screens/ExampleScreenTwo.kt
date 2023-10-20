@@ -1,15 +1,9 @@
 package com.example.composebackbone.screens
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ElevatedButton
@@ -81,7 +75,7 @@ fun ExampleScreenTwo(navController: NavController, vm: ExampleViewModel = hiltVi
             end.linkTo(parent.end)
             height = Dimension.preferredWrapContent
         }) {
-            vm.apiString.value?.pokemons?.forEach {
+            vm.pokemonList.value?.pokemons?.forEach {
                 item {
                 Card(modifier = Modifier.fillParentMaxWidth()) {
                     Text(text = it.name, fontSize = TextUnit(32f, TextUnitType.Sp), modifier = Modifier.padding(16.dp)) }

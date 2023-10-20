@@ -1,7 +1,5 @@
 package com.example.composebackbone.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -9,14 +7,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.AbstractComposeView
-import androidx.compose.ui.platform.ComposeView
 
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
@@ -25,6 +18,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.composebackbone.interactor.AddInteractor
+import com.example.composebackbone.interactor.PokemonInteractor
 import com.example.composebackbone.repo.ExampleRepo
 import com.example.composebackbone.ui.theme.ComposeBackBoneTheme
 import com.example.composebackbone.viewmodels.ExampleViewModel
@@ -72,6 +67,6 @@ fun HomeScreen(navController: NavController, vm: ExampleViewModel = hiltViewMode
 @Composable
 fun GreetingPreview() {
     ComposeBackBoneTheme {
-        HomeScreen(rememberNavController(), ExampleViewModel(ExampleRepo()))
+        HomeScreen(rememberNavController(), ExampleViewModel(PokemonInteractor(ExampleRepo()), AddInteractor(ExampleRepo())))
     }
 }
