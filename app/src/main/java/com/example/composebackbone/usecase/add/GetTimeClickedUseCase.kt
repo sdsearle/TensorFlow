@@ -1,4 +1,4 @@
-package com.example.composebackbone.usecase
+package com.example.composebackbone.usecase.add
 
 import com.example.composebackbone.repo.ExampleRepo
 import javax.inject.Inject

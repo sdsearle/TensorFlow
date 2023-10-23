@@ -14,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.composebackbone.interactor.AddInteractor
+import com.example.composebackbone.interactor.PokemonInteractor
+import com.example.composebackbone.repo.ExampleRepo
+import com.example.composebackbone.ui.theme.ComposeBackBoneTheme
 import com.example.composebackbone.viewmodels.ExampleViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -41,16 +47,16 @@ fun ExampleScreenTwo(navController: NavController, vm: ExampleViewModel = hiltVi
     }
     ConstraintLayout() {
         val (row, column) = createRefs()
-        Card (modifier = Modifier.constrainAs(row){
+        Card(modifier = Modifier.constrainAs(row) {
             top.linkTo(parent.top)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
             height = Dimension.fillToConstraints
-        }){
+        }) {
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
 
-            ) {
+                ) {
                 vm.colors.forEach {
                     item {
                         ElevatedButton(
@@ -60,15 +66,19 @@ fun ExampleScreenTwo(navController: NavController, vm: ExampleViewModel = hiltVi
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = it.value)
-                        ){
-                            Text(text = it.key, fontSize = TextUnit(32f, TextUnitType.Sp), color = getTextColor(it.value))
+                        ) {
+                            Text(
+                                text = it.key,
+                                fontSize = TextUnit(32f, TextUnitType.Sp),
+                                color = getTextColor(it.value)
+                            )
                         }
                     }
                 }
             }
         }
 
-        LazyColumn(modifier = Modifier.constrainAs(column){
+        LazyColumn(modifier = Modifier.constrainAs(column) {
             top.linkTo(row.bottom)
             bottom.linkTo(parent.bottom)
             start.linkTo(parent.start)
@@ -77,8 +87,13 @@ fun ExampleScreenTwo(navController: NavController, vm: ExampleViewModel = hiltVi
         }) {
             vm.pokemonList.value?.pokemons?.forEach {
                 item {
-                Card(modifier = Modifier.fillParentMaxWidth()) {
-                    Text(text = it.name, fontSize = TextUnit(32f, TextUnitType.Sp), modifier = Modifier.padding(16.dp)) }
+                    Card(modifier = Modifier.fillParentMaxWidth()) {
+                        Text(
+                            text = it.name,
+                            fontSize = TextUnit(32f, TextUnitType.Sp),
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                 }
 
             }
@@ -90,11 +105,24 @@ fun ExampleScreenTwo(navController: NavController, vm: ExampleViewModel = hiltVi
 
 fun getTextColor(value: Color): Color {
     val l = value.luminance()
-    return if (l > sqrt(1.05 * 0.05) - 0.05){
+    return if (l > sqrt(1.05 * 0.05) - 0.05) {
         Color.Black
-    } else{
+    } else {
         Color.White
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ScreenTwoPreview() {
+    ComposeBackBoneTheme {
+        ExampleScreenTwo(
+            navController = rememberNavController(), ExampleViewModel(
+                PokemonInteractor(ExampleRepo()),
+                AddInteractor(ExampleRepo())
+            )
+        )
+    }
 }
 

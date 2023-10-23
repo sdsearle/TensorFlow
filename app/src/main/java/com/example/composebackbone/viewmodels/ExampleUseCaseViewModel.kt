@@ -2,11 +2,11 @@ package com.example.composebackbone.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.composebackbone.usecase.AddTimesClickedUseCase
-import com.example.composebackbone.usecase.GetPokemonColorsUseCase
-import com.example.composebackbone.usecase.GetPokemonListUseCase
-import com.example.composebackbone.usecase.GetTimeClickedUseCase
-import com.example.composebackbone.usecase.RequestPokemonUseCase
+import com.example.composebackbone.usecase.add.AddTimesClickedUseCase
+import com.example.composebackbone.usecase.pokemon.GetPokemonColorsUseCase
+import com.example.composebackbone.usecase.pokemon.GetPokemonListUseCase
+import com.example.composebackbone.usecase.add.GetTimeClickedUseCase
+import com.example.composebackbone.usecase.pokemon.RequestPokemonUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,9 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ExampleUseCaseViewModel @Inject constructor(
-     getTimeClickedUseCase: GetTimeClickedUseCase,
-     getPokemonColorsUseCase: GetPokemonColorsUseCase,
-     getPokemonListUseCase: GetPokemonListUseCase,
+    getTimeClickedUseCase: GetTimeClickedUseCase,
+    getPokemonColorsUseCase: GetPokemonColorsUseCase,
+    getPokemonListUseCase: GetPokemonListUseCase,
     val addTimesClickedUseCase: AddTimesClickedUseCase,
     val requestPokemonUseCase: RequestPokemonUseCase
 ) : ViewModel() {
