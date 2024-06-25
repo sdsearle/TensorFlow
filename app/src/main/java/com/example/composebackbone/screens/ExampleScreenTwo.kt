@@ -83,7 +83,7 @@ fun ExampleScreenTwo(navController: NavController, vm: ExampleViewModel = hiltVi
             bottom.linkTo(parent.bottom)
             start.linkTo(parent.start)
             end.linkTo(parent.end)
-            height = Dimension.preferredWrapContent
+            height = Dimension.fillToConstraints
         }) {
             vm.pokemonList.value?.pokemons?.forEach {
                 item {

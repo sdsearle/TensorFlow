@@ -4,19 +4,15 @@
 
 package com.example.tensorflow.viewmodels
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,13 +24,14 @@ import org.tensorflow.lite.task.text.nlclassifier.BertNLClassifier
 import org.tensorflow.lite.task.text.nlclassifier.NLClassifier
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import org.tensorflow.lite.support.label.Category
+import org.tensorflow.lite.task.text.qa.BertQuestionAnswerer
 
 @HiltViewModel
 class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationContext val context: Context): ViewModel() {
     val text = mutableStateOf("")
-    val endResults = mutableStateOf("")
+    val endResults = mutableStateOf(listOf<String>())
+    val bertResults = mutableStateListOf<String>()
     var isRecording = mutableStateOf(false)
-    val bool = mutableStateOf("${isRecording.value}")
     private  val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
     private val recognitionIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     private lateinit var interpreter: Interpreter
@@ -45,8 +42,12 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
     private val currentDelegate = DELEGATE_CPU
     private lateinit var executor: ScheduledThreadPoolExecutor
 
+    private var bertQuestionAnswerer: BertQuestionAnswerer? = null
+
+    var numThreads: Int = 2
+
     private val labelDictionary = hashMapOf<Int, String>(
-        0 to "Location",
+        0 to "Where",
         1 to "Type",
         2 to "What"
     )
@@ -54,12 +55,19 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
     companion object {
         const val DELEGATE_CPU = 0
         const val DELEGATE_NNAPI = 1
+        const val DELEGATE_GPU = 2
         const val WORD_VEC = "wordvec.tflite"
         const val MOBILEBERT = "mobilebert.tflite"
+        private const val BERT_QA_MODEL = "models_tflite_task_library_bert_qa_lite-model_mobilebert_1_metadata_1.tflite"
     }
 
     init {
-        speechRecognizer.setRecognitionListener(object :RecognitionListener{
+        initSpeechRecognizer()
+        initClassifier()
+    }
+
+    private fun initSpeechRecognizer() {
+        speechRecognizer.setRecognitionListener(object : RecognitionListener {
             override fun onReadyForSpeech(p0: Bundle?) {
                 Timber.d("Ready")
             }
@@ -78,10 +86,12 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
 
             override fun onEndOfSpeech() {
                 Timber.d("onEndOfSpeech")
+                isRecording.value = false
             }
 
             override fun onError(error: Int) {
                 text.value = "Error: $error"
+                isRecording.value = false
             }
 
             override fun onResults(results: Bundle?) {
@@ -94,6 +104,7 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
                 if (currentText.isNotEmpty()) {
                     viewModel.getSuggestedTaskProperties(binding.inputField.text.toString())
                 }*/
+                isRecording.value = false
             }
 
             override fun onPartialResults(p0: Bundle?) {
@@ -104,7 +115,6 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
                 Timber.d("onEvent")
             }
         })
-        initClassifier()
     }
 
     fun initClassifier() {
@@ -149,8 +159,52 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
         }
     }
 
-    fun initAnotherClassifier(){
-        interpreter = Interpreter(loadModel())
+    private fun setupBertQuestionAnswerer() {
+        val baseOptionsBuilder = BaseOptions.builder().setNumThreads(numThreads)
+
+        when (currentDelegate) {
+            DELEGATE_CPU -> {
+                // Default
+            }
+            DELEGATE_GPU -> {
+                /*if (CompatibilityList().isDelegateSupportedOnThisDevice) {
+                    baseOptionsBuilder.useGpu()
+                } else {
+                    answererListener?.onError("GPU is not supported on this device")
+                }*/
+                //TODO MAKE THE ABOVE WORK
+            }
+            DELEGATE_NNAPI -> {
+                baseOptionsBuilder.useNnapi()
+            }
+        }
+
+        val options = BertQuestionAnswerer.BertQuestionAnswererOptions.builder()
+            .setBaseOptions(baseOptionsBuilder.build())
+            .build()
+
+        try {
+            bertQuestionAnswerer =
+                BertQuestionAnswerer.createFromFileAndOptions(context, BERT_QA_MODEL, options)
+        } catch (e: IllegalStateException) {
+            Timber.e("Bert Question Answerer failed to initialize. See error logs for details")
+            Timber.e( "TFLite failed to load model with error: " + e.message)
+        }
+    }
+
+    fun answer(contextOfQuestion: String, question: String, value: String) {
+        if (bertQuestionAnswerer == null) {
+            setupBertQuestionAnswerer()
+        }
+
+        // Inference time is the difference between the system time at the start and finish of the
+        // process
+        var inferenceTime = SystemClock.uptimeMillis()
+
+        val answers = bertQuestionAnswerer?.answer(contextOfQuestion, question)
+        inferenceTime = SystemClock.uptimeMillis() - inferenceTime
+        val temp = "$value: ${answers?.firstOrNull()?.text ?: "NA"}"
+        bertResults.add(temp)
     }
 
     fun classify(text: String) {
@@ -173,15 +227,18 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
             inferenceTime = SystemClock.uptimeMillis() - inferenceTime
             Timber.d("End Time: $inferenceTime")
 
-            endResults.value = results.joinToString()
+            endResults.value = results.map {
+                val string = "${it.label} ${it.score}"
+                string }
 
+            Timber.d("End results size ${endResults.value.size}")
             //listener.onResult(results, inferenceTime)
         }
     }
 
     fun handleRecording() {
         Timber.d("Handle Recording")
-        if (isRecording.value){
+        if (!isRecording.value){
             Timber.d("Start Recording")
             speechRecognizer.startListening(recognitionIntent)
         }else{
@@ -192,7 +249,12 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
     }
 
     fun handleTensorFlow() {
-        classify(text.value)
+        //classify(text.value)
+        bertResults.clear()
+        labelDictionary.forEach {
+            val question = "What is the ${it.value}?"
+            answer(text.value, question, it.value)
+        }
     }
 
 }

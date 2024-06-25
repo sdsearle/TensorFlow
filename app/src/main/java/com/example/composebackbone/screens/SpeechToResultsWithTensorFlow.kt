@@ -10,17 +10,22 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FiberManualRecord
 import androidx.compose.material.icons.filled.Upload
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -68,7 +73,7 @@ fun SpeechToResultsWithTensorFlow(navController: NavController, vm: SpeechToResu
         ){
             Icon(imageVector = Icons.Default.Upload, contentDescription = "Submit")
         }
-        Text(text = vm.bool.value,
+        Text(text = vm.isRecording.value.toString(),
             modifier = Modifier.constrainAs(debug){
             top.linkTo(button2.bottom)
             start.linkTo(parent.start)
@@ -84,13 +89,26 @@ fun SpeechToResultsWithTensorFlow(navController: NavController, vm: SpeechToResu
                 PaddingValues(16.dp)
                 height = androidx.constraintlayout.compose.Dimension.fillToConstraints
             })
-        Text(text = vm.endResults.value,
-            modifier = Modifier.constrainAs(resultsText){
-                top.linkTo(speechText.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                PaddingValues(16.dp)
-                height = androidx.constraintlayout.compose.Dimension.fillToConstraints
-            })
+        LazyColumn(modifier = Modifier.constrainAs(resultsText){
+            top.linkTo(speechText.bottom)
+            bottom.linkTo(parent.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+            PaddingValues(16.dp)
+            height = androidx.constraintlayout.compose.Dimension.fillToConstraints
+        }){
+            vm.bertResults.forEach {
+                Timber.d("ZOL Building List")
+                item {
+                    Card(modifier = Modifier.fillParentMaxWidth()) {
+                        Text(
+                            text = it,
+                            fontSize = TextUnit(32f, TextUnitType.Sp),
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
