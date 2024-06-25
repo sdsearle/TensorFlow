@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.composebackbone"
+    namespace = "com.example.tensorflow"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.composebackbone"
+        applicationId = "com.example.tensorflow"
         minSdk = 26
         targetSdk = 33
         versionCode = 1
@@ -32,6 +32,9 @@ android {
                 "proguard-rules.pro"
             )
         }
+        debug {
+
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -42,6 +45,10 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+    androidResources {
+        noCompress("tflite")
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
@@ -61,7 +68,7 @@ android {
 }
 
 // import DownloadModels task
-val ASSET_DIR: String by project("$projectDir/src/main/assets")
+//val ASSET_DIR: String by project("$projectDir/src/main/assets")
 //val TEST_ASSET_DIR: String by project("$projectDir/src/androidTest/assets")
 
 /*apply {

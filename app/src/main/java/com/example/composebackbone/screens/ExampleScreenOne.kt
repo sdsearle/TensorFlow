@@ -1,4 +1,4 @@
-package com.example.composebackbone.screens
+package com.example.tensorflow.screens
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
@@ -18,11 +18,11 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.composebackbone.interactor.AddInteractor
-import com.example.composebackbone.interactor.PokemonInteractor
-import com.example.composebackbone.repo.ExampleRepo
-import com.example.composebackbone.ui.theme.ComposeBackBoneTheme
-import com.example.composebackbone.viewmodels.ExampleViewModel
+import com.example.tensorflow.interactor.AddInteractor
+import com.example.tensorflow.interactor.PokemonInteractor
+import com.example.tensorflow.repo.ExampleRepo
+import com.example.tensorflow.ui.theme.tensorflowTheme
+import com.example.tensorflow.viewmodels.ExampleViewModel
 
 /**
  * Created by Spencer Searle, github: sdsearle on 9/15/2023.
@@ -66,7 +66,7 @@ fun HomeScreen(navController: NavController, vm: ExampleViewModel = hiltViewMode
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    ComposeBackBoneTheme {
+    tensorflowTheme {
         HomeScreen(rememberNavController(), ExampleViewModel(PokemonInteractor(ExampleRepo()), AddInteractor(ExampleRepo())))
     }
 }

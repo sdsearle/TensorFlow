@@ -1,9 +1,9 @@
-package com.example.composebackbone.viewmodels
+package com.example.tensorflow.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
-import com.example.composebackbone.interactor.AddInteractor
-import com.example.composebackbone.interactor.PokemonInteractor
+import com.example.tensorflow.interactor.AddInteractor
+import com.example.tensorflow.interactor.PokemonInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

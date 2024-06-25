@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "ComposeBackBone"
+rootProject.name = "TensorFlow"
 include(":app")

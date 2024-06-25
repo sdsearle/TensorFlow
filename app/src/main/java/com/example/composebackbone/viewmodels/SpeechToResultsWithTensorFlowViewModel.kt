@@ -2,21 +2,25 @@
  * Created by Spencer Searle on 6/24/24.
  */
 
-package com.example.composebackbone.viewmodels
+package com.example.tensorflow.viewmodels
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.app.ActivityCompat
+import androidx.core.content.PermissionChecker
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.InterpreterApi
 import org.tensorflow.lite.task.core.BaseOptions
 import timber.log.Timber
 import javax.inject.Inject
@@ -26,10 +30,12 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 import org.tensorflow.lite.support.label.Category
 
 @HiltViewModel
-class SpeechToResultsWithTensorFlowViewModel @Inject constructor(val speechRecognizer: SpeechRecognizer, @ApplicationContext val context: Context): ViewModel() {
+class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationContext val context: Context): ViewModel() {
     val text = mutableStateOf("")
     val endResults = mutableStateOf("")
-    var isRecording = false
+    var isRecording = mutableStateOf(false)
+    val bool = mutableStateOf("${isRecording.value}")
+    private  val speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context)
     private val recognitionIntent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH)
     private lateinit var interpreter: Interpreter
 
@@ -38,6 +44,12 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(val speechRecog
     private val currentModel = MOBILEBERT
     private val currentDelegate = DELEGATE_CPU
     private lateinit var executor: ScheduledThreadPoolExecutor
+
+    private val labelDictionary = hashMapOf<Int, String>(
+        0 to "Location",
+        1 to "Type",
+        2 to "What"
+    )
 
     companion object {
         const val DELEGATE_CPU = 0
@@ -92,6 +104,7 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(val speechRecog
                 Timber.d("onEvent")
             }
         })
+        initClassifier()
     }
 
     fun initClassifier() {
@@ -136,6 +149,10 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(val speechRecog
         }
     }
 
+    fun initAnotherClassifier(){
+        interpreter = Interpreter(loadModel())
+    }
+
     fun classify(text: String) {
         executor = ScheduledThreadPoolExecutor(1)
 
@@ -163,16 +180,19 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(val speechRecog
     }
 
     fun handleRecording() {
-        if (isRecording){
+        Timber.d("Handle Recording")
+        if (isRecording.value){
+            Timber.d("Start Recording")
             speechRecognizer.startListening(recognitionIntent)
         }else{
+            Timber.d("Stop Recording")
             speechRecognizer.stopListening()
         }
-        isRecording = !isRecording
+        isRecording.value = !isRecording.value
     }
 
     fun handleTensorFlow() {
-
+        classify(text.value)
     }
 
 }

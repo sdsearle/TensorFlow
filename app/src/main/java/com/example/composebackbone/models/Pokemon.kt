@@ -1,4 +1,4 @@
-package com.example.composebackbone.models
+package com.example.tensorflow.models
 
 import kotlinx.serialization.Serializable
 

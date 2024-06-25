@@ -1,6 +1,6 @@
-package com.example.composebackbone.interactor
+package com.example.tensorflow.interactor
 
-import com.example.composebackbone.repo.ExampleRepo
+import com.example.tensorflow.repo.ExampleRepo
 import javax.inject.Inject
 
 class AddInteractor @Inject constructor(val repo: ExampleRepo){

@@ -1,4 +1,4 @@
-package com.example.composebackbone.ui.theme
+package com.example.tensorflow.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

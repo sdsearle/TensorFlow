@@ -1,6 +1,6 @@
-package com.example.composebackbone.usecase.add
+package com.example.tensorflow.usecase.add
 
-import com.example.composebackbone.repo.ExampleRepo
+import com.example.tensorflow.repo.ExampleRepo
 import javax.inject.Inject
 
 class GetTimeClickedUseCase @Inject constructor(private val repo: ExampleRepo) {

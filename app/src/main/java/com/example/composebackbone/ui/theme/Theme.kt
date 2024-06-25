@@ -1,4 +1,4 @@
-package com.example.composebackbone.ui.theme
+package com.example.tensorflow.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -38,7 +38,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun ComposeBackBoneTheme(
+fun tensorflowTheme(
         // Dynamic color is available on Android 12+
     darkMode: Boolean = isSystemInDarkTheme(),
     dynamicTheme: Boolean = true,

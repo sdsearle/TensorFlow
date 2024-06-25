@@ -1,11 +1,11 @@
-package com.example.composebackbone.repo
+package com.example.tensorflow.repo
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
-import com.example.composebackbone.api.ApiExample
-import com.example.composebackbone.models.PokemonList
+import com.example.tensorflow.api.ApiExample
+import com.example.tensorflow.models.PokemonList
 import javax.inject.Inject
 import javax.inject.Singleton
 

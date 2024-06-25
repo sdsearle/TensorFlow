@@ -1,4 +1,4 @@
-package com.example.composebackbone.ui.theme
+package com.example.tensorflow.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

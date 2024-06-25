@@ -1,6 +1,6 @@
-package com.example.composebackbone.usecase.pokemon
+package com.example.tensorflow.usecase.pokemon
 
-import com.example.composebackbone.repo.ExampleRepo
+import com.example.tensorflow.repo.ExampleRepo
 import javax.inject.Inject
 
 class RequestPokemonUseCase @Inject constructor(private val repo: ExampleRepo) {

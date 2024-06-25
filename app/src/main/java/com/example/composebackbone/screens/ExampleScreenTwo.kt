@@ -1,4 +1,4 @@
-package com.example.composebackbone.screens
+package com.example.tensorflow.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.padding
@@ -23,11 +23,11 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.composebackbone.interactor.AddInteractor
-import com.example.composebackbone.interactor.PokemonInteractor
-import com.example.composebackbone.repo.ExampleRepo
-import com.example.composebackbone.ui.theme.ComposeBackBoneTheme
-import com.example.composebackbone.viewmodels.ExampleViewModel
+import com.example.tensorflow.interactor.AddInteractor
+import com.example.tensorflow.interactor.PokemonInteractor
+import com.example.tensorflow.repo.ExampleRepo
+import com.example.tensorflow.ui.theme.tensorflowTheme
+import com.example.tensorflow.viewmodels.ExampleViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -116,7 +116,7 @@ fun getTextColor(value: Color): Color {
 @Preview(showBackground = true)
 @Composable
 fun ScreenTwoPreview() {
-    ComposeBackBoneTheme {
+    tensorflowTheme {
         ExampleScreenTwo(
             navController = rememberNavController(), ExampleViewModel(
                 PokemonInteractor(ExampleRepo()),

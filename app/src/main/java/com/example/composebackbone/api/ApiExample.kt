@@ -1,6 +1,6 @@
-package com.example.composebackbone.api
+package com.example.tensorflow.api
 
-import com.example.composebackbone.models.PokemonList
+import com.example.tensorflow.models.PokemonList
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
