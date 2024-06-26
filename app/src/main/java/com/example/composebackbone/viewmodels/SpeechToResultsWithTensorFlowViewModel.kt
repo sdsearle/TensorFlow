@@ -13,7 +13,11 @@ import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
+import com.example.composebackbone.models.DataSet
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import org.tensorflow.lite.Interpreter
@@ -25,6 +29,9 @@ import org.tensorflow.lite.task.text.nlclassifier.NLClassifier
 import java.util.concurrent.ScheduledThreadPoolExecutor
 import org.tensorflow.lite.support.label.Category
 import org.tensorflow.lite.task.text.qa.BertQuestionAnswerer
+import java.io.IOException
+import java.io.InputStream
+import java.util.Locale
 
 @HiltViewModel
 class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationContext val context: Context): ViewModel() {
@@ -47,9 +54,19 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
     var numThreads: Int = 2
 
     private val labelDictionary = hashMapOf<Int, String>(
-        0 to "Where",
-        1 to "Type",
-        2 to "What"
+        0 to "Location",
+        1 to "Asset",
+        2 to "Workspace"
+    )
+
+    private val file = loadJson()
+
+
+
+    private val contextDictionary = hashMapOf<Int, List<String>>(
+        0 to (file?.getLocations() ?: listOf("ERROR")),
+        1 to (file?.getAssets() ?: listOf("ERROR")),
+        2 to (file?.getWorkspaces() ?: listOf("ERROR")),
     )
 
     companion object {
@@ -59,6 +76,7 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
         const val WORD_VEC = "wordvec.tflite"
         const val MOBILEBERT = "mobilebert.tflite"
         private const val BERT_QA_MODEL = "models_tflite_task_library_bert_qa_lite-model_mobilebert_1_metadata_1.tflite"
+        const val CONTEXT_FILE = "context.json"
     }
 
     init {
@@ -98,6 +116,7 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
                 val data = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
                 data?.map { Timber.d(it) }
                 text.value = data?.joinToString { it -> it } ?: ""
+                text.value = text.value.lowercase(Locale.getDefault())
                 /*newTextList.clear()
                 viewModel.onTranscribeStopped()
                 val currentText = binding.inputField.text.toString()
@@ -192,7 +211,7 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
         }
     }
 
-    fun answer(contextOfQuestion: String, question: String, value: String) {
+    fun answer(contextOfQuestion: String, question: String, value: String, key: Int) {
         if (bertQuestionAnswerer == null) {
             setupBertQuestionAnswerer()
         }
@@ -203,8 +222,21 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
 
         val answers = bertQuestionAnswerer?.answer(contextOfQuestion, question)
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-        val temp = "$value: ${answers?.firstOrNull()?.text ?: "NA"}"
-        bertResults.add(temp)
+        val temp = answers?.firstOrNull()?.text ?: "NA"
+        val cleanAnswer = "$value: " + cleanupAnswer(temp, key)
+        bertResults.add(cleanAnswer)
+    }
+
+    private fun cleanupAnswer(temp: String, key: Int): String {
+        var split = temp.split(",")
+        var searchable = split.first().trim()
+        if (searchable.contains("-")) {
+            split = searchable.split("-")
+            searchable = split.first() + "-"
+        }
+        var foundString = contextDictionary.getOrDefault(key, listOf("ERROR")).firstOrNull { it.contains(searchable, true) } ?: "ERROR"
+        return foundString?.split("-")?.first() ?: "ERROR"
+
     }
 
     fun classify(text: String) {
@@ -252,9 +284,23 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
         //classify(text.value)
         bertResults.clear()
         labelDictionary.forEach {
-            val question = "What is the ${it.value}?"
-            answer(text.value, question, it.value)
+            val question = "Which item in the list is best for following question: ${text.value}?"
+            answer(contextDictionary.getOrDefault(it.key, listOf("ERROR")).joinToString(), question, it.value, it.key)
         }
+    }
+
+    fun loadJson(): DataSet? {
+        var dataSet: DataSet? = null
+        try {
+            val inputStream: InputStream = context.assets.open(CONTEXT_FILE)
+            val bufferReader = inputStream.bufferedReader()
+            val stringJson: String = bufferReader.use { it.readText() }
+            val datasetType = object : TypeToken<DataSet>() {}.type
+            dataSet = Gson().fromJson(stringJson, datasetType)
+        } catch (e: IOException) {
+            Timber.e(e.message.toString())
+        }
+        return dataSet
     }
 
 }

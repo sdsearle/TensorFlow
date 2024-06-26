@@ -1,0 +1,48 @@
+{
+  "location": [
+    [
+      "Unit 111 - Unit 111",
+      "Unit 112 - Unit 112",
+      "Unit 113 - Unit 113",
+      "Unit 114 - Unit 114",
+      "Unit 201 - Unit 201",
+      "Unit 202 - Unit 202",
+      "Unit 212 - Unit 212",
+      "Apartment A - Apartment A",
+      "Apartment B - Apartment B",
+      "Apartment C - Apartment C",
+      "Apartment D - Apartment D",
+      "Apartment 101 - Apartment 101",
+      "Apartment 201 - Apartment 201"
+    ]
+  ],
+  "asset": [
+    [
+      "Disposal",
+      "Refrigerator",
+      "Dishwasher",
+      "Oven",
+      "Microwave",
+      "Stove",
+      "Washer",
+      "Dryer",
+      "Shower",
+      "Freezer",
+      "Sink",
+      "Light"
+    ]
+  ],
+  "workspace": [
+    [
+      "Maintenance",
+      "Administration",
+      "Maintenance",
+      "Construction",
+      "Inspection",
+      "Leasing",
+      "Make Ready",
+      "Preventive Maintenance",
+      "Renovation"
+    ]
+  ]
+}

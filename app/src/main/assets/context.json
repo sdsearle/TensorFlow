@@ -1,0 +1,46 @@
+{
+  "Location": [
+    "Unit 111 - Unit 111, this is the location of unit 111",
+    "Unit 112 - Unit 112, this is the location of unit 112",
+    "Unit 113 - Unit 113, this is the location of unit 113",
+    "Unit 114 - Unit 114, this is the location of unit 114",
+    "Unit 201 - Unit 201, this is the location of unit 201",
+    "Unit 202 - Unit 202, this is the location of unit 202",
+    "Unit 212 - Unit 212, this is the location of unit 212",
+    "Apartment A - Apartment A, this is the location of Apartment A, A",
+    "Apartment B - Apartment B, this is the location of Apartment B, B",
+    "Apartment C - Apartment C, this is the location of Apartment C, C",
+    "Apartment D - Apartment D, this is the location of Apartment D, D",
+    "Apartment 101 - Apartment 101, this is the location of Apartment 101",
+    "Apartment 201 - Apartment 201, this is the location of Apartment 201",
+    "unknown location - pick this if no other category matches"
+  ],
+  "Asset": [
+    "disposal - A garbage disposal (also known as a waste disposal, food waste disposer (FWD), in-sink macerator, garbage disposer, or garburator) is a device, usually electrically powered, installed under a kitchen sink between the sink's drain and the trap.",
+    "refrigerator - an appliance consisting of a thermally insulated compartment and a heat pump (mechanical, electronic or chemical) that transfers heat from its inside to its external environment so that its inside is cooled to a temperature below the room-temperature. Usually found in the kitchen",
+    "dishwasher - a machine for washing dishes automatically",
+    "oven - an enclosed compartment, as in a kitchen range, for cooking and heating food.",
+    "microwave - an electromagnetic wave with a wavelength in the range 0.001–0.3 m, shorter than that of a normal radio wave but longer than those of infrared radiation. Microwaves are used in radar, in communications, and for heating in microwave ovens and in various industrial processes.",
+    "stove - an apparatus for cooking or heating that operates by burning fuel or using electricity.",
+    "washer - a person or device that washes something.",
+    "dryer - a machine or device for drying something, especially the hair or laundry.",
+    "shower - an enclosure in which a person stands under a spray of water to wash.",
+    "freezer - a refrigerated compartment, cabinet, or room for preserving food at very low temperatures.",
+    "sink - a fixture that's typically attached to a vanity or countertop. Used to wash things.",
+    "light fixture - a lighting fixture is part of a light that is attached to the wall or ceiling where you put the light bulb or other lighting element.",
+    "other - None, NA, Can't find, Last resort, for when no other option is available, not found, last choice"
+  ],
+  "Workspace": [
+    "maintenance - the process of maintaining or preserving someone or something, or the state of being maintained. This is the choice for things pertaining to replacement or small fixes",
+    "administration - the process or activity of running a business, organization, etc. covers tasks like negotiating lease terms, tracking payments, managing maintenance issues, lease renewals, terminations, and more. In it's essence, lease administration is the process of tracking, negotiating, and reviewing the legal obligations of your commercial lease portfolio",
+    "construction - the building of something, typically a large structure. the temporary use of equipment, machinery, tools, or facilities for a specified period of time in exchange for payment.",
+    "inspection - careful examination or scrutiny. Landlords and property managers conduct property inspections to assess the condition of a property or rental.",
+    "leasing - grant (property) on lease. A lease is a contract outlining the terms under which one party agrees to rent an asset—in this case, property—owned by another party.",
+    "make ready - prepare. A make-ready (or a turnover) is preparing a rental for a new resident after a previous one has moved out. Make readies, rental turns, and rental turnover are all expressions used to describe this process. When a resident decides to move out, the make-ready begins with a move-out inspection.",
+    "preventive maintenance - a proactive, scheduled approach to maintaining equipment and assets to prevent failures and extend their life. It is essentially taking a proactive approach to maintaining the property you rent out.",
+    "renovation - the action of renovating a building. To renovate is to reinvigorate, revive and make new. When we renovate a property we are generally turning it into something new. This might include include taking out walls, dividing rooms and/or converting rooms for a new use. It relates much more to the structure of a building."
+  ],
+  "AssetDefinition": [
+    "a commercial and home appliance consisting of a thermally insulated compartment and a heat pump (mechanical, electronic or chemical) that transfers heat from its inside to its external environment so that its inside is cooled to a temperature below the room temperature."
+  ]
+}

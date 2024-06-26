@@ -85,6 +85,10 @@ dependencies {
     implementation("org.tensorflow:tensorflow-lite-task-text:0.4.0")
     implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
 
+    // Gson library
+    implementation("com.google.code.gson:gson:2.9.0")
+    implementation("com.google.guava:guava:28.1-android")
+
     //Timber
     implementation("com.jakewharton.timber:timber:5.0.1")
 
