@@ -113,6 +113,9 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
             }
 
             override fun onError(error: Int) {
+                if (error == 5){
+                    return
+                }
                 text.value = "Error: $error"
                 isRecording.value = false
             }
@@ -293,7 +296,7 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
         //classify(text.value)
         bertResults.clear()
         labelDictionary.forEach {
-            val question = "Which item in the list is best for following question: ${text.value}?"
+            val question = "${text.value}?"
             answer(contextDictionary.getOrDefault(it.key, listOf("ERROR")).joinToString(), question, it.value, it.key)
         }
     }
