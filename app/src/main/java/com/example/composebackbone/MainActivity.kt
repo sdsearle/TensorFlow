@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
     fun requestRecordAudioPermission(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val requiredPermission = Manifest.permission.RECORD_AUDIO
-            val permissions = arrayListOf<String>(requiredPermission)
+            val permissions: Array<String> = arrayOf(Manifest.permission.RECORD_AUDIO)
 
             // If the user previously denied this permission then show a message explaining why
             // this permission is needed
@@ -36,8 +36,12 @@ class MainActivity : ComponentActivity() {
                     context,
                     requiredPermission
                 ) == PermissionChecker.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(this,
-                    permissions.toArray() as Array<out String>, 101 )
+
+                ActivityCompat.requestPermissions(
+                    this,
+                    permissions,
+                    101
+                )
             }
         }
     }

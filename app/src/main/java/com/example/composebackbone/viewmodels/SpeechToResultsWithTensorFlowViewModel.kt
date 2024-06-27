@@ -7,6 +7,8 @@ package com.example.tensorflow.viewmodels
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
@@ -104,7 +106,10 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
 
             override fun onEndOfSpeech() {
                 Timber.d("onEndOfSpeech")
-                isRecording.value = false
+                Handler(Looper.getMainLooper()).postDelayed({
+                    //Do something after 100ms
+                    isRecording.value = false
+                }, 3000)
             }
 
             override fun onError(error: Int) {
@@ -123,7 +128,11 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
                 if (currentText.isNotEmpty()) {
                     viewModel.getSuggestedTaskProperties(binding.inputField.text.toString())
                 }*/
-                isRecording.value = false
+
+                Handler(Looper.getMainLooper()).postDelayed({
+                    //Do something after 100ms
+                   isRecording.value = false
+                }, 3000)
             }
 
             override fun onPartialResults(p0: Bundle?) {

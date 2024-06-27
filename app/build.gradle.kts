@@ -78,7 +78,6 @@ android {
 dependencies {
     val navVersion = "2.7.2"
     val ktor_version = "2.3.4"
-
     //Tensor Flow
     implementation("org.tensorflow:tensorflow-lite-task-vision-play-services:0.4.2")
     implementation("com.google.android.gms:play-services-tflite-gpu:16.1.0")
@@ -111,6 +110,12 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    val composeBom = platform("androidx.compose:compose-bom:2024.06.00")
+    implementation(composeBom)
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+
     //End Nav
 
     implementation("androidx.core:core-ktx:1.12.0")
