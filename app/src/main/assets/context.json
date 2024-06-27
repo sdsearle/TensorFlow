@@ -13,11 +13,11 @@
     "Apartment D - Apartment D, this is the location of Apartment D, D",
     "Apartment 101 - Apartment 101, this is the location of Apartment 101",
     "Apartment 201 - Apartment 201, this is the location of Apartment 201",
-    "unknown location - pick this if no other category matches"
+    "unknown"
   ],
   "Asset": [
     "disposal - A garbage disposal (also known as a waste disposal, food waste disposer (FWD), in-sink macerator, garbage disposer, or garburator) is a device, usually electrically powered, installed under a kitchen sink between the sink's drain and the trap.",
-    "refrigerator - an appliance consisting of a thermally insulated compartment and a heat pump (mechanical, electronic or chemical) that transfers heat from its inside to its external environment so that its inside is cooled to a temperature below the room-temperature. Usually found in the kitchen",
+    "refrigerator - an appliance consisting of a thermally insulated space and a heat pump (mechanical, electronic or chemical) that transfers heat from its inside to its external environment so that its inside is cooled to a temperature below the room-temperature.",
     "dishwasher - a machine for washing dishes automatically",
     "oven - an enclosed compartment, as in a kitchen range, for cooking and heating food.",
     "microwave - an electromagnetic wave with a wavelength in the range 0.001–0.3 m, shorter than that of a normal radio wave but longer than those of infrared radiation. Microwaves are used in radar, in communications, and for heating in microwave ovens and in various industrial processes.",
@@ -25,10 +25,10 @@
     "washer - a person or device that washes something.",
     "dryer - a machine or device for drying something, especially the hair or laundry.",
     "shower - an enclosure in which a person stands under a spray of water to wash.",
-    "freezer - a refrigerated compartment, cabinet, or room for preserving food at very low temperatures.",
+    "freezer - a refrigerated space for preserving food at very low temperatures.",
     "sink - a fixture that's typically attached to a vanity or countertop. Used to wash things.",
     "light fixture - a lighting fixture is part of a light that is attached to the wall or ceiling where you put the light bulb or other lighting element.",
-    "other - None, NA, Can't find, Last resort, for when no other option is available, not found, last choice"
+    "other"
   ],
   "Workspace": [
     "maintenance - the process of maintaining or preserving someone or something, or the state of being maintained. This is the choice for things pertaining to replacement or small fixes",
