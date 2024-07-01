@@ -121,10 +121,10 @@ class SpeechToResultsWithTensorFlowViewModel @Inject constructor(@ApplicationCon
             }
 
             override fun onResults(results: Bundle?) {
-                val data = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
-                data?.map { Timber.d(it) }
-                text.value = data?.joinToString { it -> it } ?: ""
-                text.value = text.value.lowercase(Locale.getDefault())
+                val data = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)?.firstOrNull() ?: "ERROR"
+                /*data?.map { Timber.d(it) }
+                text.value = data?.joinToString { it -> it } ?: ""*/
+                text.value = data.lowercase(Locale.getDefault())
                 /*newTextList.clear()
                 viewModel.onTranscribeStopped()
                 val currentText = binding.inputField.text.toString()
